@@ -1,0 +1,17 @@
+
+
+li{
+  list-style: none;
+}
+
+.status {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  display: inline-block;
+  //float: left;
+  border-radius: 50%;
+  &.checked-in {
+    background-color: green;
+  }
+}

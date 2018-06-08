@@ -1,0 +1,9 @@
+<li>
+  <span
+    class="status"
+    [ngClass]="{'checked-in': item.checkedIn}"
+  ></span>
+  {{item.fullname}}
+  Children: {{item.children?.length || 0}}
+</li>
+
