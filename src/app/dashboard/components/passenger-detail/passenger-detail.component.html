@@ -1,9 +1,20 @@
 <li>
-  <span
-    class="status"
-    [ngClass]="{'checked-in': item.checkedIn}"
-  ></span>
-  {{item.fullname}}
-  Children: {{item.children?.length || 0}}
+  <div>
+    <span
+      class="status"
+      [ngClass]="{'checked-in': item.checkedIn}"
+    >
+    </span>
+    {{item.fullname}}
+  </div>
+
+  <div class="date">
+    Checked in date: {{item.checkInDate? (item.checkInDate | date | uppercase ) : 'Not checked in' }}
+  </div>
+
+  <div>
+    Children: {{item.children?.length || 0}}
+  </div>
+
 </li>
 
