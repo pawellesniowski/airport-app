@@ -5,19 +5,37 @@ import { Passenger } from '../../models/passenger.interface';
 @Component({
   selector: 'app-dashboard-passengers-component',
   template: `
-    <div>Dashboard Passengers</div>
+    <h3>Dashboard Passengers</h3>
     <app-passenger-count
      [items]="passengers"
     ></app-passenger-count>
     <app-passenger-detail
       *ngFor="let passenger of passengers"
       [item]="passenger"
+      (edit)="handleEdit($event)"
+      (remove)="handleRemove($event)"
     ></app-passenger-detail>
 `
 })
 export class DashboardPassengersComponent implements OnInit {
 
   passengers: Passenger[];
+
+  handleEdit(item: Passenger) {
+    console.log(item);
+    this.passengers = this.passengers.map((passenger: Passenger) => {
+      if (passenger.id === item.id) {
+        passenger = item;
+      }
+      return passenger;
+    });
+    console.log(this.passengers);
+  }
+
+  handleRemove(item) {
+    console.log('handle REMOVE from passenger detail component', item.fullname);
+    this.passengers = this.passengers.filter((passenger: Passenger) => passenger.id !== item.id );
+  }
 
   ngOnInit() {
     this.passengers = [
