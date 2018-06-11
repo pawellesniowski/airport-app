@@ -25,7 +25,7 @@ export class DashboardPassengersComponent implements OnInit {
     console.log(item);
     this.passengers = this.passengers.map((passenger: Passenger) => {
       if (passenger.id === item.id) {
-        passenger = item;
+        passenger = Object.assign({}, passenger, item);
       }
       return passenger;
     });
