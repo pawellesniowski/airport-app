@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import { Passenger } from '../../models/passenger.interface';
 
@@ -6,6 +6,9 @@ import { Passenger } from '../../models/passenger.interface';
   selector: 'app-dashboard-passengers-component',
   template: `
     <h3>Dashboard Passengers</h3>
+    <div *ngFor="let passenger of passengers">
+      {{passenger.fullname}}
+    </div>
     <app-passenger-count
      [items]="passengers"
     ></app-passenger-count>
@@ -15,21 +18,20 @@ import { Passenger } from '../../models/passenger.interface';
       (edit)="handleEdit($event)"
       (remove)="handleRemove($event)"
     ></app-passenger-detail>
-`
+  `,
 })
 export class DashboardPassengersComponent implements OnInit {
 
   passengers: Passenger[];
 
   handleEdit(item: Passenger) {
-    console.log(item);
     this.passengers = this.passengers.map((passenger: Passenger) => {
       if (passenger.id === item.id) {
         passenger = Object.assign({}, passenger, item);
       }
       return passenger;
     });
-    console.log(this.passengers);
+    // this.passengers = [...this.passengers, item];
   }
 
   handleRemove(item) {
