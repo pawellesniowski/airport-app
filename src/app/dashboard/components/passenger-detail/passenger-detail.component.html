@@ -1,16 +1,16 @@
 <li>
-  <div>{{item.fullname}}</div>
   <div class="passenger-detail-item-heading">
     <span
       class="status"
       [ngClass]="{'checked-in': item.checkedIn}"
     >
     </span>
-    <div *ngIf="editing">
+    <div
+      [class.hide-element]="!editing"
+    >
       <input
         type="text"
         [value]="item.fullname"
-        (input)="onNameChange(name.value)"
         #name
       >
     </div>
@@ -22,13 +22,19 @@
   <div class="date">
     Checked in date: {{item.checkInDate? (item.checkInDate | date | uppercase ) : 'Not checked in' }}
   </div>
-
   <div>
     Children: {{item.children?.length || 0}}
   </div>
 
   <div>
-    <button (click)="toggleEdit()">{{ editing ? 'Submit' : 'Edit'}}</button>
+    <button
+      [class.hide-element]="!editing"
+      (click)="onSubmit(name.value)"
+    >Submit</button>
+    <button
+      [class.hide-element]="editing"
+      (click)="toggleEdit()"
+    >Edit</button>
     <button (click)="onRemove()">Remove</button>
   </div>
 </li>

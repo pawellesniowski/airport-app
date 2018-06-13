@@ -19,6 +19,6 @@ import { PassengerDetailComponent } from './components/passenger-detail/passenge
     BrowserModule,
     CommonModule
   ],
-  exports: [DashboardPassengersComponent],
+  exports: [DashboardPassengersComponent]
 })
 export class DashboardModule {}

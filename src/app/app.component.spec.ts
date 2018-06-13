@@ -3,7 +3,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 
-describe('Appcomponetn', () => {
+describe('App Component', () => {
   let fixture: ComponentFixture<AppComponent>;
   let instance: AppComponent ;
 
@@ -24,8 +24,6 @@ describe('Appcomponetn', () => {
   });
 
   it('should be correct title', () => {
-    console.log(instance);
-    console.log(fixture);
     expect(instance.title).toBe('Passengers List');
   });
 

@@ -1,77 +1,73 @@
-import {Component, OnInit} from '@angular/core';
-
-import { Passenger } from '../../models/passenger.interface';
+import {Component, Injectable, OnInit} from '@angular/core';
+import {Passenger} from '../../models/passenger.interface';
+import {PassengerDashboardService} from '../../../APIs/passengers.api';
 
 @Component({
   selector: 'app-dashboard-passengers-component',
   template: `
     <h3>Dashboard Passengers</h3>
-    <div *ngFor="let passenger of passengers">
-      {{passenger.fullname}}
+
+    <div *ngIf="loading">
+      ..loading
     </div>
-    <app-passenger-count
-     [items]="passengers"
-    ></app-passenger-count>
-    <app-passenger-detail
-      *ngFor="let passenger of passengers"
-      [item]="passenger"
-      (edit)="handleEdit($event)"
-      (remove)="handleRemove($event)"
-    ></app-passenger-detail>
+
+    <ng-container *ngIf="!loading">
+      <app-passenger-count
+        [items]="passengers"
+      ></app-passenger-count>
+
+      <div
+        *ngFor="let passenger of passengers">
+        <app-passenger-detail
+          [item]="passenger"
+          (edit)="handleEdit($event)"
+          (remove)="handleRemove($event)"
+        ></app-passenger-detail>
+
+      </div>
+    </ng-container>
   `,
 })
+@Injectable()
 export class DashboardPassengersComponent implements OnInit {
 
-  passengers: Passenger[];
+  passengers: Passenger[] = [];
+  loading = false;
 
-  handleEdit(item: Passenger) {
-    this.passengers = this.passengers.map((passenger: Passenger) => {
-      if (passenger.id === item.id) {
-        passenger = Object.assign({}, passenger, item);
-      }
-      return passenger;
-    });
-    // this.passengers = [...this.passengers, item];
+  constructor(private passengerDashboardService: PassengerDashboardService) {}
+
+  ngOnInit() {
+    this.getPassengers();
+  }
+
+  getPassengers() {
+    this.loading = true;
+    this.passengerDashboardService.getPassengers()
+      .subscribe(
+        (data: Passenger[]) => {
+          console.log('data: ', data);
+          this.passengers = data;
+          this.loading = false;
+        }
+      );
+  }
+
+  handleEdit(passenger: Passenger) {
+    // this.passengers = this.passengers.map((i: Passenger) => {
+    //   if (passenger.id === i.id) {
+    //     passenger = i;
+    //   }
+    //   return passenger;
+    // });
+
+    this.passengerDashboardService.updatePassenger(passenger)
+      .subscribe((res) => {
+        console.log('res: ', res);
+      });
   }
 
   handleRemove(item) {
     console.log('handle REMOVE from passenger detail component', item.fullname);
     this.passengers = this.passengers.filter((passenger: Passenger) => passenger.id !== item.id );
   }
-
-  ngOnInit() {
-    this.passengers = [
-      {
-      id: 1,
-      fullname: 'Stephen',
-      checkedIn: true,
-      checkInDate: 1490742000000,
-      children: null
-    }, {
-      id: 2,
-      fullname: 'Rose',
-      checkedIn: false,
-      checkInDate: null,
-      children: [{ name: 'Ted', age: 12 }, { name: 'Chloe', age: 7 }]
-    }, {
-      id: 3,
-      fullname: 'James',
-      checkedIn: true,
-      checkInDate: 1491606000000,
-      children: null
-    }, {
-      id: 4,
-      fullname: 'Louise',
-      checkedIn: true,
-      checkInDate: 1488412800000,
-      children: [{ name: 'Jessica', age: 1 }]
-    }, {
-      id: 5,
-      fullname: 'Tina',
-      checkedIn: false,
-      checkInDate: null,
-      children: null
-    }];
-  }
-
 }
