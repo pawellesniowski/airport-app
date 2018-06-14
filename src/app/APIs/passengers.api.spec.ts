@@ -18,7 +18,7 @@ describe('Apii service', () => {
         PassengerDashboardService,
         MockBackend,
       ]
-    })
+    });
   })
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('Apii service', () => {
     backend = TestBed.get(MockBackend);
   });
 
-  it("should service exist", () => {
+  it('service should  exist', () => {
     expect(service).toBeTruthy();
   });
 

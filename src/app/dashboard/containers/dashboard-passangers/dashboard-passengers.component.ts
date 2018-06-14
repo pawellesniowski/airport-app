@@ -1,4 +1,4 @@
-import {Component, Injectable, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit, OnDestroy} from '@angular/core';
 import {Passenger} from '../../models/passenger.interface';
 import {PassengerDashboardService} from '../../../APIs/passengers.api';
 
@@ -29,7 +29,7 @@ import {PassengerDashboardService} from '../../../APIs/passengers.api';
   `,
 })
 @Injectable()
-export class DashboardPassengersComponent implements OnInit {
+export class DashboardPassengersComponent implements OnInit, OnDestroy {
 
   passengers: Passenger[] = [];
   loading = false;
@@ -53,21 +53,28 @@ export class DashboardPassengersComponent implements OnInit {
   }
 
   handleEdit(passenger: Passenger) {
-    // this.passengers = this.passengers.map((i: Passenger) => {
-    //   if (passenger.id === i.id) {
-    //     passenger = i;
-    //   }
-    //   return passenger;
-    // });
-
     this.passengerDashboardService.updatePassenger(passenger)
-      .subscribe((res) => {
-        console.log('res: ', res);
+      .subscribe(() => {
+        this.getPassengers();
+      }, (error) => {
+        alert('error, we can not edit this item, error: ' + error.statusText);
+        this.getPassengers();
       });
   }
 
-  handleRemove(item) {
-    console.log('handle REMOVE from passenger detail component', item.fullname);
-    this.passengers = this.passengers.filter((passenger: Passenger) => passenger.id !== item.id );
+  handleRemove(passenger: Passenger) {
+    this.passengers = this.passengers.filter((item: Passenger) => item.id !== passenger.id );
+    this.passengerDashboardService.deletePassenger(passenger)
+      .subscribe(() => {
+        this.getPassengers();
+      }, (error) => {
+        alert('error, we can not delete this item, error: ' + error.statusText);
+        this.getPassengers();
+      });
   }
+
+  ngOnDestroy() {
+
+  }
+
 }

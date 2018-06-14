@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <app-dashboard-passengers-component></app-dashboard-passengers-component>
+    <app-viewer-passenger></app-viewer-passenger>
   `
 })
 export class AppComponent {

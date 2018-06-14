@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Passenger} from '../dashboard/models/passenger.interface';
-import {catchError} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+
+
 
 @Injectable()
 export class PassengerDashboardService {
@@ -11,16 +11,26 @@ export class PassengerDashboardService {
 
   constructor(private http: HttpClient) {}
 
+  getPassenger(id: number) {
+    return this.http.get<Passenger>(this.configUrl + `/${id}`);
+  }
+
   getPassengers() {
     return this.http.get<Passenger[]>(this.configUrl);
   }
 
-  updatePassenger(passenger: Passenger): Observable<Passenger> {
-    console.log('updating...', passenger);
-    return this.http.put<Passenger>(this.configUrl + `/${passenger.id}`, passenger)
-      .pipe(
-        catchError(err => console.log(err))
-      );
+  updatePassenger(passenger: Passenger) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    const httpOptions = {
+      headers
+    };
+    return this.http.put<Passenger>(this.configUrl + `/${passenger.id}`, passenger, httpOptions);
+  }
+
+  deletePassenger(passenger: Passenger) {
+    return this.http.delete(this.configUrl + `/${passenger.id}`);
   }
 
 
