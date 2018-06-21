@@ -8,8 +8,9 @@ import { Passenger } from '../../models/passenger.interface';
 })
 export class PassengerDetailComponent {
   @Input() item: Passenger;
-  @Output() edit = new EventEmitter<Passenger>();
-  @Output() remove: EventEmitter<any> = new EventEmitter();
+  @Output() edit: EventEmitter<Passenger> = new EventEmitter<Passenger>();
+  @Output() remove: EventEmitter<Passenger> = new EventEmitter<Passenger>();
+  @Output() view: EventEmitter<Passenger> = new EventEmitter<Passenger>();
 
   editing = false;
 
@@ -18,7 +19,6 @@ export class PassengerDetailComponent {
   }
 
   onSubmit(name: string) {
-
     this.edit.emit({...this.item, fullname: name});
     this.editing = false;
   }
@@ -26,4 +26,9 @@ export class PassengerDetailComponent {
   onRemove() {
     this.remove.emit(this.item);
   }
+
+  onViewPassenger() {
+    this.view.emit(this.item);
+  }
+
 }

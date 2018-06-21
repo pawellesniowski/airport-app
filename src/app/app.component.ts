@@ -1,15 +1,41 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+
+interface Nav {
+  link: string;
+  name: string;
+  exact: boolean;
+}
 
 @Component({
   selector: 'app-root',
   template: `
-    <app-dashboard-passengers-component></app-dashboard-passengers-component>
-    <app-viewer-passenger></app-viewer-passenger>
-  `
+    <div class="app">
+      <nav
+        class="nav"
+      >
+        <a *ngFor="let item of nav"
+          [routerLink]="item.link"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.exact }"
+        >{{item.name}}</a>
+
+      </nav>
+      <router-outlet></router-outlet>
+    </div>
+  `,
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  title: string;
-  constructor() {
-    this.title = 'Passengers List';
-  }
+  nav: Nav[] = [
+    {
+      link: '/',
+      name: 'Home',
+      exact: true
+    },
+    {
+      link: '/dashboard',
+      name: 'Dashboard',
+      exact: true
+    }
+  ];
 }

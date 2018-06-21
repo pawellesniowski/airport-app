@@ -1,6 +1,7 @@
 import {Component, Injectable, OnInit, OnDestroy} from '@angular/core';
 import {Passenger} from '../../models/passenger.interface';
 import {PassengerDashboardService} from '../../../APIs/passengers.api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-passengers-component',
@@ -22,6 +23,7 @@ import {PassengerDashboardService} from '../../../APIs/passengers.api';
           [item]="passenger"
           (edit)="handleEdit($event)"
           (remove)="handleRemove($event)"
+          (view)="handleView($event)"
         ></app-passenger-detail>
 
       </div>
@@ -34,7 +36,10 @@ export class DashboardPassengersComponent implements OnInit, OnDestroy {
   passengers: Passenger[] = [];
   loading = false;
 
-  constructor(private passengerDashboardService: PassengerDashboardService) {}
+  constructor(
+    private passengerDashboardService: PassengerDashboardService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getPassengers();
@@ -71,6 +76,10 @@ export class DashboardPassengersComponent implements OnInit, OnDestroy {
         alert('error, we can not delete this item, error: ' + error.statusText);
         this.getPassengers();
       });
+  }
+
+  handleView(passenger: Passenger) {
+    this.router.navigate([`./dashboard/passengers/`, passenger.id]);
   }
 
   ngOnDestroy() {

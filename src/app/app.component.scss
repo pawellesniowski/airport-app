@@ -1,0 +1,16 @@
+.nav {
+  margin: 0 0 20px;
+  padding: 0 0 30px;
+  border-bottom: solid 2px blue;
+  a{
+    background-color: black;
+    color: white;
+    margin: 3px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    &.active{
+      color: blue;
+      background-color: lightsteelblue;
+    }
+  }
+}
